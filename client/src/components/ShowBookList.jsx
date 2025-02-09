@@ -1,53 +1,40 @@
-import { useState, useEffect } from 'react';
-import '../styles.css';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import BookCard from './BookCard';
+import { useState, useEffect } from "react";
+import "../styles.css";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Datatable from "./Datatable";
 
 function ShowBookList() {
-  const apiUrl = import.meta.env.VITE_API_URL; 
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/api/books`)
+      .get("http://localhost:8082/api/books")
       .then((res) => {
         setBooks(res.data);
       })
       .catch((err) => {
-        console.log('Error from ShowBookList');
+        console.log("Error from ShowBookList");
       });
   }, []);
 
   const bookList =
     books.length === 0
-      ? 'there is no book record!'
-      : books.map((book, k) => <BookCard book={book} key={k} />);
+      ? "there is no book record!"
+      : <Datatable books={books} />;
+
 
   return (
-    <div className='ShowBookList'>
-      <div className='container'>
-        <div className='row'>
-          <div className='col-md-12'>
-            <br />
-            <h2 className='display-4 text-center'>Books List</h2>
-          </div>
+    <div className="book-list">
+       <h2 className="book-list-header">Books List</h2>
 
-          <div className='col-md-11'>
-            <Link
-              to='/create-book'
-              className='btn btn-outline-warning float-right'
-            >
-              + Add New Book
-            </Link>
-            <br />
-            <br />
-            <hr />
-          </div>
-        </div>
-
-        <div className='list'>{bookList}</div>
-      </div>
+      <Link to="/create-book" className="link-create-book">
+        <button type="button" className="btn-create-book btn">
+          Add New Book
+        </button>
+      </Link>
+      
+      <div className="list">{bookList}</div>
     </div>
   );
 }

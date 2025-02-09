@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import '../styles.css';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import "../styles.css";
+import axios from "axios";
 
 function ShowBookDetails(props) {
-  const apiUrl = import.meta.env.VITE_API_URL; 
   const [book, setBook] = useState({});
 
   const { id } = useParams();
@@ -12,57 +11,57 @@ function ShowBookDetails(props) {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/api/books/${id}`)
+      .get(`http://localhost:8082/api/books/${id}`)
       .then((res) => {
         setBook(res.data);
       })
       .catch((err) => {
-        console.log('Error from ShowBookDetails');
+        console.log("Error from ShowBookDetails");
       });
   }, [id]);
 
   const onDeleteClick = (id) => {
     axios
-      .delete(`${apiUrl}/api/books/${id}`)
+      .delete(`http://localhost:8082/api/books/${id}`)
       .then((res) => {
-        navigate('/');
+        navigate("/");
       })
       .catch((err) => {
-        console.log('Error form ShowBookDetails_deleteClick');
+        console.log("Error form ShowBookDetails_deleteClick");
       });
   };
 
   const BookItem = (
     <div>
-      <table className='table table-hover table-dark'>
+      <table className="table-show-book datatable">
         <tbody>
           <tr>
-            <th scope='row'>1</th>
+            <th scope="row">1</th>
             <td>Title</td>
             <td>{book.title}</td>
           </tr>
           <tr>
-            <th scope='row'>2</th>
+            <th scope="row">2</th>
             <td>Author</td>
             <td>{book.author}</td>
           </tr>
           <tr>
-            <th scope='row'>3</th>
+            <th scope="row">3</th>
             <td>ISBN</td>
             <td>{book.isbn}</td>
           </tr>
           <tr>
-            <th scope='row'>4</th>
+            <th scope="row">4</th>
             <td>Publisher</td>
             <td>{book.publisher}</td>
           </tr>
           <tr>
-            <th scope='row'>5</th>
+            <th scope="row">5</th>
             <td>Published Date</td>
             <td>{book.published_date}</td>
           </tr>
           <tr>
-            <th scope='row'>6</th>
+            <th scope="row">6</th>
             <td>Description</td>
             <td>{book.description}</td>
           </tr>
@@ -72,42 +71,38 @@ function ShowBookDetails(props) {
   );
 
   return (
-    <div className='ShowBookDetails'>
-      <div className='container'>
-        <div className='row'>
-          <div className='col-md-10 m-auto'>
-            <br /> <br />
-            <Link to='/' className='btn btn-outline-warning float-left'>
-              Show Book List
-            </Link>
-          </div>
-          <br />
-          <div className='col-md-8 m-auto'>
-            <h1 className='display-4 text-center'>Book's Record</h1>
-            <p className='lead text-center'>View Book's Info</p>
-            <hr /> <br />
-          </div>
-          <div className='col-md-10 m-auto'>{BookItem}</div>
-          <div className='col-md-6 m-auto'>
-            <button
-              type='button'
-              className='btn btn-outline-danger btn-lg btn-block'
-              onClick={() => {
-                onDeleteClick(book._id);
-              }}
-            >
-              Delete Book
-            </button>
-          </div>
-          <div className='col-md-6 m-auto'>
-            <Link
-              to={`/edit-book/${book._id}`}
-              className='btn btn-outline-info btn-lg btn-block'
-            >
-              Edit Book
-            </Link>
-          </div>
-        </div>
+    <div className="show-book-details">
+      
+      <Link to="/" className="link-show-book-list">
+        <button type="button" className="btn-show-book-list btn">
+          Show BooK List
+        </button>
+      </Link>
+
+      <div className="book-detail-header">
+        <h1 className="book-detail-header">Book's Record</h1>
+        <p className="book-detail-text">View Book's Info</p>
+        <br />
+      </div>
+
+      <div className="book-details">{BookItem}</div>
+       <br/>
+      <div className="btn">
+        <button
+          type="button"
+          className="btn-delete-book btn"
+          onClick={() => {
+            onDeleteClick(book._id);
+          }}
+        >
+          Delete Book
+        </button>
+
+        <Link to={`/edit-book/${book._id}`}>
+          <button type="button" className="btn-edit-book btn">
+            Edit Book
+          </button>
+        </Link>
       </div>
     </div>
   );
