@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import API from "../API";
 
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +23,8 @@ const CreateBook = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    axios
-      .post("http://localhost:8082/api/books", book)
+    API
+      .post("/api/books", book)
       .then((res) => {
         setBook({
           title: "",
@@ -46,7 +46,7 @@ const CreateBook = (props) => {
   return (
     <div className="createbook">
 
-      <Link to="/" className="link-show-book-list">
+      <Link to="/show-book" className="link-show-book-list">
         <button type="button" className="btn-show-book-list btn">
           Show BooK List
         </button>

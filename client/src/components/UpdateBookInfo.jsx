@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../API";
 import "../styles.css";
 
 function UpdateBookInfo(props) {
@@ -17,8 +17,8 @@ function UpdateBookInfo(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8082/api/books/${id}`)
+    API
+      .get(`/api/books/${id}`)
       .then((res) => {
         setBook({
           title: res.data.title,
@@ -50,8 +50,8 @@ function UpdateBookInfo(props) {
       publisher: book.publisher,
     };
 
-    axios
-      .put(`http://localhost:8082/api/books/${id}`, data)
+    API
+      .put(`/api/books/${id}`, data)
       .then((res) => {
         navigate(`/show-book/${id}`);
       })

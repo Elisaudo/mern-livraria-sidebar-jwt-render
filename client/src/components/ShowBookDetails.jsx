@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import "../styles.css";
-import axios from "axios";
+import API from "../API";
 
 function ShowBookDetails(props) {
   const [book, setBook] = useState({});
@@ -10,8 +10,8 @@ function ShowBookDetails(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8082/api/books/${id}`)
+    API
+      .get(`/api/books/${id}`)
       .then((res) => {
         setBook(res.data);
       })
@@ -21,8 +21,8 @@ function ShowBookDetails(props) {
   }, [id]);
 
   const onDeleteClick = (id) => {
-    axios
-      .delete(`http://localhost:8082/api/books/${id}`)
+    API
+      .delete(`/api/books/${id}`)
       .then((res) => {
         navigate("/");
       })

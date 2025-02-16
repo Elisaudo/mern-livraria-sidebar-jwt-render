@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import axios from "axios";
+import API from "../API";
 import { ToastContainer, toast } from "react-toastify";
 
 const Home = () => {
@@ -11,13 +11,15 @@ const Home = () => {
   useEffect(() => {
     const verifyCookie = async () => {
       if (!cookies.token) {
+        console.log("No token found");
         navigate("/login");
       }
-      const { data } = await axios.post(
-        "http://localhost:8082",
+      const { data } = await API.post(
+        "/",
         {},
         { withCredentials: true }
       );
+      console.log(data);
       const { status, user } = data;
       setUsername(user);
       return status

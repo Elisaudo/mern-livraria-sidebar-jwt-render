@@ -1,17 +1,25 @@
 import { Navigate, Outlet, useNavigate} from "react-router-dom";
 import { useCookies } from "react-cookie";
+import API from "../API";
 
-const ProtectedRoute = ({allowedRoles}) => {
+const ProtectedRoute = ({handleError, allowedRoles}) => {
   const [cookies] = useCookies([]);
-  const token = cookies.token;
   const navigate = useNavigate();
 
-  if (!token) return <Navigate to="/" />;
+  if (!cookies.token) return <Navigate to="/" />;
 
-  if (allowedRoles.includes(token.role)) {
+  const { data } = API.post(
+    "/",
+    {},
+    { withCredentials: true }
+  );
+  const { role } = data;
+
+  if (allowedRoles.includes(role)) {
     return <Outlet/>;
   }
  else{
+   handleError("Você não está autorizado a acessar esta página!");
    navigate(-1);
   }
 };

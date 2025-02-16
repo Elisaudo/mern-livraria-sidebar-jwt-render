@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../API";
 import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
@@ -30,8 +30,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:8082/login",
+      const { data } = await API.post(
+        "/login",
         {
           ...inputValue,
         },
@@ -42,7 +42,7 @@ const Login = () => {
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/");
+          navigate("/show-book");
         }, 1000);
       } else {
         handleError(message);
