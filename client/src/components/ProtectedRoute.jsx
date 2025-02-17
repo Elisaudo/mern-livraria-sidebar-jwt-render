@@ -1,27 +1,48 @@
-import { Navigate, Outlet, useNavigate} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import API from "../API";
 
-const ProtectedRoute = ({handleError, allowedRoles}) => {
-  const [cookies] = useCookies([]);
+const ProtectedRoute = ({ handleError, allowedRoles }) => {
+  const [cookies] = useCookies(["token"]);
   const navigate = useNavigate();
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!cookies.token) return <Navigate to="/" />;
+  useEffect(() => {
+    const verifyCookie = async () => {
+      if (!cookies.token) {
+        console.log("No token found");
+        navigate("/login");
+        return;
+      }
 
-  const { data } = API.post(
-    "/",
-    {},
-    { withCredentials: true }
-  );
-  const { role } = data;
+      try {
+        const { data } = await API.post("/", {}, { withCredentials: true });
+        console.log(`data: ${data.role}`);
+        setRole(data.role);
+      } catch (error) {
+        console.error("Erro ao verificar o cookie:", error);
+        handleError("Erro de autenticação. Faça login novamente.");
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (allowedRoles.includes(role)) {
-    return <Outlet/>;
+    verifyCookie();
+  }, [cookies, navigate]);
+
+  if (loading) {
+    return <p>Carregando...</p>;
   }
- else{
-   handleError("Você não está autorizado a acessar esta página!");
-   navigate(-1);
+
+  if (!role || !allowedRoles.includes(role)) {
+    handleError("Você não está autorizado a acessar esta página!");
+    return <Navigate to="/show-book" />;
   }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

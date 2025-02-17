@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "./styles.css";
-//import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Layout from "./components/Layout";
 import CreateBook from "./components/CreateBook";
@@ -15,10 +15,12 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 
 const App = () => {
-  const handleError = (err) =>
-    toast.error(err, {
-      position: "bottom-left",
-    });
+    const handleError = (err) =>
+    setTimeout(() => {
+      toast.error(err, {
+        position: "bottom-left",
+      });
+    }, 1000);
 
   return (
     <Router>
@@ -29,7 +31,8 @@ const App = () => {
 
         <Route element={<Layout />}>
           <Route path="/show-book" element={<ShowBookList />} />
-
+          <Route path="/create-book" element={<CreateBook />} />
+{/*
           <Route
             element={
               <ProtectedRoute
@@ -40,12 +43,12 @@ const App = () => {
           >
             <Route path="/create-book" element={<CreateBook />} />
           </Route>
-
+*/}
           <Route
             element={
               <ProtectedRoute
                 handleError={handleError}
-                allowedRoles={["manager", "user"]}
+                allowedRoles={["admin","manager", "user"]}
               />
             }
           >
@@ -61,27 +64,3 @@ const App = () => {
 };
 
 export default App;
-
-/*
-          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="/create-book" element={<CreateBook />} />
-          </Route>
-          <Route element={<ProtectedRoute allowedRoles={["manager", "user"]} />}>
-            <Route path="/edit-book/:id" element={<UpdateBookInfo />} />
-          </Route>
-
-
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        <Route element={<Layout />}>
-          <Route path="/show-book" element={<ShowBookList />} />
-          <Route path="/create-book" element={<CreateBook />} />
-          <Route path="/edit-book/:id" element={<UpdateBookInfo />} />
-          <Route path="/show-book/:id" element={<ShowBookDetails />} />
-        </Route>
-
-
-
-          */
