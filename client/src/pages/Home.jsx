@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import API from "../API";
 import { ToastContainer, toast } from "react-toastify";
+import "./pagestyles.css";
 
 const Home = () => {
   const navigate = useNavigate();

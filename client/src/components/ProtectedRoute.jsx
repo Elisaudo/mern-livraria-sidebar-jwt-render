@@ -19,7 +19,6 @@ const ProtectedRoute = ({ handleError, allowedRoles }) => {
 
       try {
         const { data } = await API.post("/", {}, { withCredentials: true });
-        console.log(`data: ${data.role}`);
         setRole(data.role);
       } catch (error) {
         console.error("Erro ao verificar o cookie:", error);

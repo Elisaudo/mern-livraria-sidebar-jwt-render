@@ -1,5 +1,4 @@
 const express = require('express');
-//const { routeVerification } = require("../../middlewares/authMiddleware");
 
 const router = express.Router();
 

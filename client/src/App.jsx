@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "./styles.css";
+//import "./styles.css";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Layout from "./components/Layout";
@@ -10,9 +10,9 @@ import ShowBookList from "./components/ShowBookList";
 import ShowBookDetails from "./components/ShowBookDetails";
 import UpdateBookInfo from "./components/UpdateBookInfo";
 
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 const App = () => {
     const handleError = (err) =>
@@ -32,18 +32,7 @@ const App = () => {
         <Route element={<Layout />}>
           <Route path="/show-book" element={<ShowBookList />} />
           <Route path="/create-book" element={<CreateBook />} />
-{/*
-          <Route
-            element={
-              <ProtectedRoute
-                handleError={handleError}
-                allowedRoles={["admin"]}
-              />
-            }
-          >
-            <Route path="/create-book" element={<CreateBook />} />
-          </Route>
-*/}
+
           <Route
             element={
               <ProtectedRoute
@@ -53,6 +42,7 @@ const App = () => {
             }
           >
             <Route path="/edit-book/:id" element={<UpdateBookInfo />} />
+            
           </Route>
 
           <Route path="/show-book/:id" element={<ShowBookDetails />} />
